@@ -4,4 +4,3 @@ resources:
   - sources
   - nginx
   - redis
-  - restapi

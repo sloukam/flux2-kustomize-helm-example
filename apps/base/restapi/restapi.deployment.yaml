@@ -38,6 +38,8 @@ spec:
               value: "redis-pubsub"
             - name: TOPIC_NAME
               value: "orders"
+            - name: STATE_STORE_NAME
+              value: "postgres-statestore"
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
