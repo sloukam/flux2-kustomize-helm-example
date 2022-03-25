@@ -24,7 +24,8 @@ spec:
     spec:
       containers:
         - name: restapi
-          image: jlldataplatform.azurecr.io/restapi-cloud:latest
+          image: restapi-cloud:1.0.1
+#          image: jlldataplatform.azurecr.io/restapi-cloud:latest
           ports:
             - containerPort: 3001
           imagePullPolicy: IfNotPresent
