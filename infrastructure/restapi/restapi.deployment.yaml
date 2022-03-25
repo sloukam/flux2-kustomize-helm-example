@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restapi
+  namespace: restapi
+  labels:
+    app: restapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restapi
+  template:
+    metadata:
+      labels:
+        app: restapi
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "restapi"
+        dapr.io/app-port: "3001"
+        dapr.io/config: "dapr-config"
+        dapr.io/log-as-json: "true"
+        linkerd.io/inject: "enabled"
+    spec:
+      containers:
+        - name: restapi
+          image: restapi-cloud
+          ports:
+            - containerPort: 3001
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: CONSUL_URL
+              value: "consul-server.dapr-discovery.svc.cluster.local"
+            - name: CONSUL_SPRING_REGISTER
+              value: "false"
+            - name: PUB_SUB_NAME
+              value: "redis-pubsub"
+            - name: TOPIC_NAME
+              value: "orders"
+            - name: STATE_STORE_NAME
+              value: "postgres-statestore"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 3001
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 3001
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 3
+

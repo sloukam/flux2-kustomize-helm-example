@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: restapi
+  namespace: restapi
+  labels:
+    app: restapi
+spec:
+  selector:
+    app: restapi
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3001
+  type: ClusterIP
